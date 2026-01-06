@@ -1,40 +1,61 @@
-import { useEffect, useState } from "react";
-import type { Schema } from "../amplify/data/resource";
-import { generateClient } from "aws-amplify/data";
+import { Authenticator } from "@aws-amplify/ui-react";
 
-const client = generateClient<Schema>();
-
-function App() {
-  const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
-
-  useEffect(() => {
-    client.models.Todo.observeQuery().subscribe({
-      next: (data) => setTodos([...data.items]),
-    });
-  }, []);
-
-  function createTodo() {
-    client.models.Todo.create({ content: window.prompt("Todo content") });
-  }
-
+export default function App() {
   return (
-    <main>
-      <h1>My todos</h1>
-      <button onClick={createTodo}>+ new</button>
-      <ul>
-        {todos.map((todo) => (
-          <li key={todo.id}>{todo.content}</li>
-        ))}
-      </ul>
-      <div>
-        🥳 App successfully hosted. Try creating a new todo.
-        <br />
-        <a href="https://docs.amplify.aws/react/start/quickstart/#make-frontend-updates">
-          Review next step of this tutorial.
-        </a>
-      </div>
-    </main>
+    <Authenticator hideSignUp>
+      {({ signOut, user }) => (
+        <div
+          style={{
+            minHeight: "100vh",
+            background: "#070A14",
+            color: "#E6E7EA",
+            padding: 32,
+            fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, sans-serif",
+          }}
+        >
+          <header
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              borderBottom: "1px solid #23263A",
+              paddingBottom: 16,
+            }}
+          >
+            <div>
+              <div style={{ fontSize: 22, fontWeight: 700 }}>Freudian Slip</div>
+              <div style={{ opacity: 0.7, fontSize: 13 }}>Sessions Portal</div>
+            </div>
+
+            <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+              <span style={{ opacity: 0.75, fontSize: 13 }}>
+                {user?.signInDetails?.loginId}
+              </span>
+              <button
+                onClick={signOut}
+                style={{
+                  border: "1px solid #23263A",
+                  background: "transparent",
+                  color: "#E6E7EA",
+                  padding: "8px 12px",
+                  cursor: "pointer",
+                }}
+              >
+                Sign out
+              </button>
+            </div>
+          </header>
+
+          <main style={{ marginTop: 24 }}>
+            <div style={{ border: "1px solid #23263A", padding: 16, maxWidth: 760 }}>
+              <div style={{ fontWeight: 600, marginBottom: 8 }}>Logged in ✅</div>
+              <div style={{ opacity: 0.8 }}>
+                Next we’ll add: sessions list, notes/tags, and the multitrack “web DAW”.
+              </div>
+            </div>
+          </main>
+        </div>
+      )}
+    </Authenticator>
   );
 }
-
-export default App;
