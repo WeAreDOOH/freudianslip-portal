@@ -8,21 +8,28 @@ import outputs from "../amplify_outputs.json";
 import "@aws-amplify/ui-react/styles.css";
 import "./index.css";
 
-// Configure Amplify from amplify_outputs.json.
-// If config is wrong, we STILL mount React and log the issue.
+// Allow prod to override auth config via Amplify env vars
+const cfg: any = structuredClone(outputs);
+
+cfg.auth = cfg.auth ?? {};
+cfg.auth.aws_region = import.meta.env.VITE_AWS_REGION ?? cfg.auth.aws_region;
+cfg.auth.user_pool_id = import.meta.env.VITE_USER_POOL_ID ?? cfg.auth.user_pool_id;
+cfg.auth.user_pool_client_id =
+  import.meta.env.VITE_USER_POOL_CLIENT_ID ?? cfg.auth.user_pool_client_id;
+
 try {
-  Amplify.configure(outputs as any);
-  // eslint-disable-next-line no-console
-  console.log("Amplify configured");
+  Amplify.configure(cfg);
+  console.log("Amplify configured", {
+    region: cfg.auth.aws_region,
+    userPoolId: cfg.auth.user_pool_id,
+    clientId: cfg.auth.user_pool_client_id,
+  });
 } catch (err) {
-  // eslint-disable-next-line no-console
   console.error("Amplify.configure failed", err);
 }
 
 const rootEl = document.getElementById("root");
-if (!rootEl) {
-  throw new Error('Missing <div id="root"></div> in index.html');
-}
+if (!rootEl) throw new Error('Missing <div id="root"></div> in index.html');
 
 ReactDOM.createRoot(rootEl).render(
   <React.StrictMode>
