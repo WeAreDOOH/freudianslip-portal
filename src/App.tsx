@@ -2,7 +2,7 @@ import { Authenticator } from "@aws-amplify/ui-react";
 import { Component, type ReactNode } from "react";
 import SessionsList from "./SessionsList";
 
-function Portal({ user, signOut }: { user: any; signOut: () => void }) {
+function Portal({ user, signOut }: { user: any; signOut?: () => void }) {
   return (
     <div
       style={{
@@ -51,7 +51,7 @@ function Portal({ user, signOut }: { user: any; signOut: () => void }) {
           </span>
 
           <button
-            onClick={signOut}
+            onClick={() => signOut?.()}
             style={{
               border: "1px solid #23263A",
               background: "transparent",
