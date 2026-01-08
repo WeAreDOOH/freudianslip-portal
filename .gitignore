@@ -27,3 +27,6 @@ dist-ssr
 .amplify
 amplify_outputs*
 amplifyconfiguration*
+
+# Allow amplify outputs for hosting
+!amplify_outputs.json
