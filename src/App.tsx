@@ -1,6 +1,65 @@
 import { Authenticator } from "@aws-amplify/ui-react";
 import { Component, type ReactNode } from "react";
 import SessionsList from "./SessionsList";
+import { BrowserRouter, Routes, Route, Navigate, useParams, Link } from "react-router-dom";
+
+function Home() {
+  return (
+    <div style={{ border: "1px solid #23263A", padding: 16, maxWidth: 760 }}>
+      <div style={{ fontWeight: 600, marginBottom: 8 }}>Logged in ✅</div>
+
+      <SessionsList />
+
+      <div style={{ opacity: 0.8, marginTop: 12 }}>
+        Next we’ll add: session detail page, notes/tags, and the multitrack “web DAW”.
+      </div>
+    </div>
+  );
+}
+
+function SessionPage() {
+  const { sessionId } = useParams();
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 980 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div>
+          <div style={{ fontSize: 22, fontWeight: 800 }}>Session Detail</div>
+          <div style={{ opacity: 0.7, fontSize: 13 }}>
+            This will become the DAW view
+          </div>
+        </div>
+
+        <Link
+          to="/"
+          style={{
+            border: "1px solid rgba(255,255,255,0.14)",
+            background: "transparent",
+            color: "#E6E7EA",
+            padding: "8px 12px",
+            textDecoration: "none",
+          }}
+        >
+          ← Back to sessions
+        </Link>
+      </div>
+
+      <div style={{ border: "1px solid #23263A", padding: 16 }}>
+        <div style={{ fontWeight: 700, marginBottom: 6 }}>Session ID</div>
+        <code style={{ color: "#E6E7EA" }}>{sessionId ?? ""}</code>
+
+        <div style={{ marginTop: 14, opacity: 0.85 }}>
+          Next: waveform, tracks, stems, markers, notes.
+        </div>
+      </div>
+
+      <div style={{ border: "1px solid #23263A", padding: 16, opacity: 0.8 }}>
+        Placeholder: DAW timeline area (coming soon)
+        <div style={{ marginTop: 10, height: 220, border: "1px dashed rgba(255,255,255,0.18)" }} />
+      </div>
+    </div>
+  );
+}
 
 function Portal({ user, signOut }: { user: any; signOut?: () => void }) {
   return (
@@ -66,16 +125,11 @@ function Portal({ user, signOut }: { user: any; signOut?: () => void }) {
       </header>
 
       <main style={{ marginTop: 24 }}>
-        <div style={{ border: "1px solid #23263A", padding: 16, maxWidth: 760 }}>
-          <div style={{ fontWeight: 600, marginBottom: 8 }}>Logged in ✅</div>
-
-          {/* Session list from DynamoDB (via your Lambda URL) */}
-          <SessionsList />
-
-          <div style={{ opacity: 0.8, marginTop: 12 }}>
-            Next we’ll add: session detail page, notes/tags, and the multitrack “web DAW”.
-          </div>
-        </div>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/session/:sessionId" element={<SessionPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </main>
     </div>
   );
@@ -118,9 +172,11 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { error: unknown 
 export default function App() {
   return (
     <ErrorBoundary>
-      <Authenticator hideSignUp>
-        {({ signOut, user }) => <Portal user={user} signOut={signOut} />}
-      </Authenticator>
+      <BrowserRouter>
+        <Authenticator hideSignUp>
+          {({ signOut, user }) => <Portal user={user} signOut={signOut} />}
+        </Authenticator>
+      </BrowserRouter>
     </ErrorBoundary>
   );
 }
