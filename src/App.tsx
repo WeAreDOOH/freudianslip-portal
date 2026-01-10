@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate, useParams, Link } from "react-r
 
 function Home() {
   return (
-    <div style={{ border: "1px solid #23263A", padding: 16, maxWidth: 760 }}>
+    <div style={{ border: "1px solid #23263A", padding: 16, maxWidth: "100%" }}>
       <div style={{ fontWeight: 600, marginBottom: 8 }}>Logged in ✅</div>
 
       <SessionsList />
@@ -21,7 +21,7 @@ function SessionPage() {
   const { sessionId } = useParams();
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 980 }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: "100%" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div>
           <div style={{ fontSize: 22, fontWeight: 800 }}>Session Detail</div>
