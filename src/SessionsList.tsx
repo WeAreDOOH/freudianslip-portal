@@ -31,6 +31,28 @@ export default function SessionsList() {
   const [error, setError] = useState<string | null>(null);
 
   const apiUrl = import.meta.env.VITE_SESSIONS_API_URL as string | undefined;
+  const downloadApiUrl = import.meta.env.VITE_DOWNLOAD_API_URL as string | undefined;
+
+  async function downloadZip(sessionId: string) {
+    try {
+      if (!downloadApiUrl) throw new Error("Missing VITE_DOWNLOAD_API_URL");
+
+      const u = new URL(downloadApiUrl);
+      u.searchParams.set("sessionId", sessionId);
+
+      const res = await fetch(u.toString(), { method: "GET" });
+      if (!res.ok) throw new Error(`Download API error: ${res.status} ${res.statusText}`);
+
+      const data = await res.json();
+      const url = data?.url as string | undefined;
+      if (!url) throw new Error("Download API did not return a url");
+
+      // Kick off the download
+      window.location.href = url;
+    } catch (e: any) {
+      alert(e?.message ?? "Download failed");
+    }
+  }
 
   useEffect(() => {
     let cancelled = false;
@@ -133,14 +155,15 @@ export default function SessionsList() {
                 </button>
 
                 <button
-                  disabled
+                  onClick={() => downloadZip(s.sessionId)}
+                  disabled={!downloadApiUrl}
                   style={{
-                    opacity: 0.55,
+                    opacity: downloadApiUrl ? 1 : 0.55,
                     border: "1px solid rgba(255,255,255,0.14)",
                     background: "transparent",
                     color: "#E6E7EA",
                     padding: "6px 10px",
-                    cursor: "not-allowed",
+                    cursor: downloadApiUrl ? "pointer" : "not-allowed",
                   }}
                 >
                   Download
