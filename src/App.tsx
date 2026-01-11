@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate, useParams, Link } from "react-r
 
 function Home() {
   return (
-    <div style={{ border: "1px solid #23263A", padding: 16, maxWidth: "100%" }}>
+    <div style={{ border: "1px solid #23263A", padding: 16, width: "100%m" maxWidth: 960}}>
       <div style={{ fontWeight: 600, marginBottom: 8 }}>Logged in ✅</div>
 
       <SessionsList />
@@ -124,7 +124,7 @@ function Portal({ user, signOut }: { user: any; signOut?: () => void }) {
         </div>
       </header>
 
-      <main style={{ marginTop: 24, width: "100%"}}>
+      <main style={{ marginTop: 24, width: "100%", maxWidth: 960 }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/session/:sessionId" element={<SessionPage />} />
