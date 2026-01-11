@@ -124,7 +124,7 @@ function Portal({ user, signOut }: { user: any; signOut?: () => void }) {
         </div>
       </header>
 
-      <main style={{ marginTop: 24 }}>
+      <main style={{ marginTop: 24, width: "100%"}}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/session/:sessionId" element={<SessionPage />} />
