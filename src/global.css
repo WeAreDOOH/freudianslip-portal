@@ -1,0 +1,10 @@
+html {
+  /* Modern browsers: reserves scrollbar space so width doesn’t jump between routes */
+  scrollbar-gutter: stable;
+}
+
+body {
+  margin: 0;
+  /* Fallback for browsers that don’t support scrollbar-gutter */
+  overflow-y: scroll;
+}

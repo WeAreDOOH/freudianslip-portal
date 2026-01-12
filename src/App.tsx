@@ -18,9 +18,9 @@ const shellStyle: React.CSSProperties = {
 };
 
 const panelStyle: React.CSSProperties = {
-  width: "100%",
   border: "1px solid #23263A",
   padding: 16,
+  width: "100%",
   boxSizing: "border-box",
 };
 
@@ -42,7 +42,7 @@ function SessionPage() {
   const { sessionId } = useParams();
 
   return (
-    <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: 12 }}>
+    <div style={{display: "flex", flexDirection: "column", gap: 12, width: "100%"}}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
         <div>
           <div style={{ fontSize: 22, fontWeight: 800 }}>Session Detail</div>
@@ -146,13 +146,13 @@ function Portal({ user, signOut }: { user: any; signOut?: () => void }) {
         </header>
       </div>
 
-      <main style={{ marginTop: 24 }}>
+      <main style={{ marginTop: 24, width: "100%" }}>
         <div style={shellStyle}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/session/:sessionId" element={<SessionPage />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/session/:sessionId" element={<SessionPage />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
         </div>
       </main>
     </div>
