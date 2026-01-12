@@ -1,23 +1,26 @@
 import { Authenticator } from "@aws-amplify/ui-react";
-import { Component, type ReactNode } from "react";
+import { Component, type ReactNode, type CSSProperties } from "react";
 import SessionsList from "./SessionsList";
 import { BrowserRouter, Routes, Route, Navigate, useParams, Link } from "react-router-dom";
 
 const SHELL_PAD = 24;
-// Set to a big number to feel “full width”, but still stops ultra-wide monitors looking silly.
-// If you truly want uncapped width: set MAX_W = undefined and remove maxWidth below.
-const MAX_W = 1400;
 
-const shellStyle: React.CSSProperties = {
+const shellStyle: CSSProperties = {
   width: "100%",
-  maxWidth: MAX_W,
-  margin: "0 auto",
   paddingLeft: SHELL_PAD,
   paddingRight: SHELL_PAD,
   boxSizing: "border-box",
 };
 
-const panelStyle: React.CSSProperties = {
+const pageStackStyle: CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  gap: 12,
+  width: "100%",
+  boxSizing: "border-box",
+};
+
+const panelStyle: CSSProperties = {
   border: "1px solid #23263A",
   padding: 16,
   width: "100%",
@@ -26,13 +29,15 @@ const panelStyle: React.CSSProperties = {
 
 function Home() {
   return (
-    <div style={panelStyle}>
-      <div style={{ fontWeight: 600, marginBottom: 8 }}>Logged in ✅</div>
+    <div style={pageStackStyle}>
+      <div style={panelStyle}>
+        <div style={{ fontWeight: 600, marginBottom: 8 }}>Logged in ✅</div>
 
-      <SessionsList />
+        <SessionsList />
 
-      <div style={{ opacity: 0.8, marginTop: 12 }}>
-        Next we’ll add: session detail page, notes/tags, and the multitrack “web DAW”.
+        <div style={{ opacity: 0.8, marginTop: 12 }}>
+          Next we’ll add: session detail page, notes/tags, and the multitrack “web DAW”.
+        </div>
       </div>
     </div>
   );
@@ -42,26 +47,28 @@ function SessionPage() {
   const { sessionId } = useParams();
 
   return (
-    <div style={{display: "flex", flexDirection: "column", gap: 12, width: "100%"}}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
-        <div>
-          <div style={{ fontSize: 22, fontWeight: 800 }}>Session Detail</div>
-          <div style={{ opacity: 0.7, fontSize: 13 }}>This will become the DAW view</div>
-        </div>
+    <div style={pageStackStyle}>
+      <div style={panelStyle}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+          <div>
+            <div style={{ fontSize: 22, fontWeight: 800 }}>Session Detail</div>
+            <div style={{ opacity: 0.7, fontSize: 13 }}>This will become the DAW view</div>
+          </div>
 
-        <Link
-          to="/"
-          style={{
-            border: "1px solid rgba(255,255,255,0.14)",
-            background: "transparent",
-            color: "#E6E7EA",
-            padding: "8px 12px",
-            textDecoration: "none",
-            whiteSpace: "nowrap",
-          }}
-        >
-          ← Back to sessions
-        </Link>
+          <Link
+            to="/"
+            style={{
+              border: "1px solid rgba(255,255,255,0.14)",
+              background: "transparent",
+              color: "#E6E7EA",
+              padding: "8px 12px",
+              textDecoration: "none",
+              whiteSpace: "nowrap",
+            }}
+          >
+            ← Back to sessions
+          </Link>
+        </div>
       </div>
 
       <div style={panelStyle}>
