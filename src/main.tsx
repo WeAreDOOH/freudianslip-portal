@@ -7,6 +7,12 @@ import outputs from "../amplify_outputs.json";
 
 import "@aws-amplify/ui-react/styles.css";
 import "./index.css";
+import "./global.css";
+
+// Keep layout width stable between routes (avoid subtle shifts when pages become scrollable)
+// Ensures the browser reserves scrollbar space consistently.
+document.documentElement.style.scrollbarGutter = "stable";
+document.body.style.overflowY = "scroll";
 
 // Allow prod to override auth config via Amplify env vars
 const cfg: any = structuredClone(outputs);

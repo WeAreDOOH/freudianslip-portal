@@ -88,7 +88,7 @@ export default function SessionsList() {
   }, [sessions]);
 
   return (
-    <div style={{ marginTop: 16 }}>
+    <div style={{ marginTop: 16, width: "100%", boxSizing: "border-box" }}>
       <div style={{ fontSize: 18, fontWeight: 700, marginBottom: 10 }}>Sessions</div>
 
       {loading && <div style={{ opacity: 0.85 }}>Loading…</div>}
@@ -103,7 +103,7 @@ export default function SessionsList() {
       {!loading && !error && rows.length === 0 && <div style={{ opacity: 0.85 }}>No sessions yet.</div>}
 
       {!loading && !error && rows.length > 0 && (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, width: "100%" }}>
           {rows.map((s) => (
             <div
               key={s.sessionId}
@@ -115,10 +115,25 @@ export default function SessionsList() {
                 padding: "10px 12px",
                 border: "1px solid rgba(255,255,255,0.14)",
                 background: "rgba(255,255,255,0.04)",
+                width: "100%",
+                boxSizing: "border-box",
+                minWidth: 0,
               }}
             >
-              <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                <code style={{ color: "#E6E7EA", fontSize: 13 }}>{s.sessionId}</code>
+              <div style={{ display: "flex", flexDirection: "column", gap: 2, minWidth: 0, flex: 1 }}>
+                <code
+                  style={{
+                    color: "#E6E7EA",
+                    fontSize: 13,
+                    display: "block",
+                    maxWidth: "100%",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {s.sessionId}
+                </code>
                 {(s.dateLabel || s.timeLabel) && (
                   <div style={{ fontSize: 12, opacity: 0.75 }}>
                     {s.dateLabel ?? "—"} {s.timeLabel ? `• ${s.timeLabel}` : ""}
